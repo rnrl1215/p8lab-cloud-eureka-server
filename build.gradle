@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.p8labs'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 
 java {
 	toolchain {
@@ -23,6 +23,27 @@ ext {
 	set('springCloudVersion', "2024.0.0")
 }
 
+
+// 실행 가능한 JAR 생성 설정
+bootJar {
+	enabled = true
+
+	doLast {
+		copy {
+			def jarFile = tasks.bootJar.archiveFile.get().asFile
+			def jarFilePath = jarFile.path
+
+			from jarFilePath
+			into getRootDir().path + "/build/docker/"
+		}
+	}
+}
+
+// 일반 JAR 파일 생성 비활성화
+jar {
+	enabled = false
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
@@ -30,11 +51,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	// Docker
-	// https://mvnrepository.com/artifact/com.bmuschko.docker-remote-api/com.bmuschko.docker-remote-api.gradle.plugin
-	implementation 'com.bmuschko.docker-remote-api:com.bmuschko.docker-remote-api.gradle.plugin:9.4.0'
-// https://mvnrepository.com/artifact/com.bmuschko.docker-java-application/com.bmuschko.docker-java-application.gradle.plugin
-	implementation 'com.bmuschko.docker-java-application:com.bmuschko.docker-java-application.gradle.plugin:9.4.0'
 
 }
 
@@ -61,7 +77,7 @@ tasks.create('createDockerfile', Dockerfile) {
 	copyFile(jarFile.getName(), '/app.jar')
 	runCommand("mkdir -p target/dependency && (cd target/dependency; jar -xf /app.jar)")
 	entryPoint("java", "-jar", "/app.jar")
-	exposePort(8071)
+	exposePort(8070)
 }
 
 task buildImage(type: DockerBuildImage) {
@@ -74,6 +90,6 @@ task pushDocker(type: DockerPushImage) {
 	images.add("rnrl1215/p8labs-eureka:latest")
 	registryCredentials {
 		username = 'rnrl1215'
-		password = ''
+		password = 'dkstjdrnr1!'
 	}
 }
