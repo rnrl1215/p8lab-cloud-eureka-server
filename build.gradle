@@ -66,12 +66,12 @@ tasks.create('createDockerfile', Dockerfile) {
 
 task buildImage(type: DockerBuildImage) {
 	dependsOn createDockerfile
-	images.add('rnrl1215/p8labs-cafe:latest')
+	images.add('rnrl1215/p8labs-eureka:latest')
 }
 
 task pushDocker(type: DockerPushImage) {
 	dependsOn buildImage  // Docker 이미지 빌드 후 푸시
-	images.add("rnrl1215/p8labs-cafe:latest")
+	images.add("rnrl1215/p8labs-eureka:latest")
 	registryCredentials {
 		username = 'rnrl1215'
 		password = ''
