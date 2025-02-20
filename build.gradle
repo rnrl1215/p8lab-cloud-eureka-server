@@ -90,6 +90,6 @@ task pushDocker(type: DockerPushImage) {
 	images.add("rnrl1215/p8labs-eureka:latest")
 	registryCredentials {
 		username = 'rnrl1215'
-		password = 'dkstjdrnr1!'
+		password = ''
 	}
 }
