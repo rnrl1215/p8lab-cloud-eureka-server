@@ -4,8 +4,9 @@ spring:
   cloud:
     config:
       uri: http://localhost:8071
-    loadbalancer:
-      ribbon:
-        enable: false
   config:
     import: "optional:configserver:"
+
+eureka:
+  server:
+    wait-time-in-ms-when-sync-empty: 5
